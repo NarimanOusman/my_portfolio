@@ -8,30 +8,19 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
-                    colors: {
-                        "primary": "#136dec",
-                        "background-light": "#F8F8F8",
-                        "background-dark": "#111418",
-                        "surface-dark": "#1c2027",
-                        "text-secondary": "#94a3b8" 
-                    },
                     fontFamily: {
                         "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
                 },
             },
         }
     </script>
-<style>.skill-card:hover .overlay {
-            transform: translateY(0);
-        }.nav-link {
+<style>
+        .nav-link {
             position: relative;
         }
         .nav-link::after {
@@ -41,244 +30,320 @@
             height: 2px;
             bottom: -2px;
             left: 0;
-            background-color: #136dec;
+            background-color: #ffffff;
             transition: width 0.3s ease-in-out;
         }
         .nav-link:hover::after,
         .nav-link.active::after {
             width: 100%;
         }
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }.skill-card:hover .overlay {
+            transform: translateY(0);
+        }.reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .hero-image-container {
+            animation: slideInRight 1s ease-out forwards;
+        }
     </style>
+<script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Optional: remove class to animate every time it comes into view (requested: "every scroll")
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, observerOptions);
+            const elements = document.querySelectorAll('.reveal-on-scroll');
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
 </head>
-<body class="bg-background-dark font-display text-slate-50">
+<body class="bg-gradient-to-br from-slate-50 to-sky-100 font-display text-slate-800 min-h-screen">
 <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-<header class="sticky top-0 z-50 w-full border-b border-[#282f39] bg-[#111418]/90 backdrop-blur-md px-4 py-3 md:px-10">
-<div class="mx-auto flex max-w-[1200px] items-center justify-between">
+<header class="sticky top-0 z-50 w-full bg-gradient-to-r from-[#0f172a] to-[#0ea5e9] shadow-md px-4 py-3 md:px-10">
+<div class="mx-auto flex max-w-[1400px] items-center justify-between">
 <div class="flex items-center gap-4 text-white">
-<div class="size-8 flex items-center justify-center rounded bg-primary/10 text-primary">
-<span class="material-symbols-outlined text-[20px]">data_exploration</span>
+<div class="size-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+<span class="material-symbols-outlined text-[24px]">dataset</span>
 </div>
-<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Nariman Osman</h2>
+<h2 class="text-xl font-bold leading-tight tracking-tight text-white">Nariman</h2>
 </div>
 <nav class="hidden md:flex flex-1 justify-center gap-8">
-<a class="nav-link text-sm font-medium leading-normal text-text-secondary hover:text-primary transition-colors" href="#">Home</a>
-<a class="nav-link active text-sm font-bold leading-normal text-primary" href="#">About</a>
-<a class="nav-link text-sm font-medium leading-normal text-text-secondary hover:text-primary transition-colors" href="#">Projects</a>
-<a class="nav-link text-sm font-medium leading-normal text-text-secondary hover:text-primary transition-colors" href="#">Blog</a>
-<a class="nav-link text-sm font-medium leading-normal text-text-secondary hover:text-primary transition-colors" href="#">Contact</a>
+<a class="nav-link text-sm font-medium leading-normal text-white/80 hover:text-white transition-colors" href="/">Home</a>
+<a class="nav-link active text-sm font-bold leading-normal text-white" href="/about">About</a>
+<a class="nav-link text-sm font-medium leading-normal text-white/80 hover:text-white transition-colors" href="/projects">Projects</a>
+<a class="nav-link text-sm font-medium leading-normal text-white/80 hover:text-white transition-colors" href="/blog">Blog</a>
+<a class="nav-link text-sm font-medium leading-normal text-white/80 hover:text-white transition-colors" href="/contact">Contact</a>
 </nav>
 <div class="flex items-center gap-4">
-<button class="md:hidden text-white">
-<span class="material-symbols-outlined">menu</span>
+<button class="md:hidden text-white p-1" onclick="toggleMobileMenu()">
+<span class="material-symbols-outlined text-3xl">menu</span>
 </button>
-<a class="hidden md:flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors" href="#contact">
+<a class="hidden md:flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-white text-[#0f172a] text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm" href="/contact">
 <span class="truncate">Contact Me</span>
 </a>
 </div>
 </div>
+<div class="absolute top-full left-0 w-full bg-gradient-to-b from-[#0f172a] to-[#0ea5e9] md:hidden flex flex-col items-center py-6 space-y-4 shadow-xl z-40 border-t border-white/10" id="mobile-menu" style="min-height: 50vh;">
+<a class="text-lg font-medium text-white hover:text-blue-200 transition-colors" href="/">Home</a>
+<a class="text-lg font-bold text-white border-b-2 border-white" href="/about">About</a>
+<a class="text-lg font-medium text-white hover:text-blue-200 transition-colors" href="/projects">Projects</a>
+<a class="text-lg font-medium text-white hover:text-blue-200 transition-colors" href="/blog">Blog</a>
+<a class="text-lg font-medium text-white hover:text-blue-200 transition-colors" href="/contact">Contact</a>
+<a class="mt-4 px-8 py-2 bg-white text-[#0f172a] font-bold rounded-full hover:bg-gray-100 transition-colors" href="/contact">Contact Me</a>
+</div>
 </header>
 <main class="flex-1">
 <div class="layout-container flex h-full grow flex-col items-center">
-<div class="w-full max-w-[960px] px-4 py-10 md:py-16 md:px-10">
-<div class="flex flex-col-reverse md:flex-row gap-10 items-center md:items-start">
-<div class="flex flex-1 flex-col gap-5">
-<div class="space-y-2">
-<span class="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary tracking-wide uppercase">About Me</span>
-<h1 class="text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] text-white">
-                                    Data Scientist &amp; Researcher
-                                </h1>
+<div class="w-full max-w-[1400px] px-4 py-12 md:py-20 md:px-10">
+<div class="flex flex-col-reverse md:flex-row gap-12 items-center md:items-start">
+<div class="flex flex-1 flex-col gap-6">
+<div class="space-y-3">
+<span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700 tracking-wide uppercase border border-blue-200 shadow-sm">About Me</span>
+<h1 class="text-3xl md:text-6xl font-black leading-tight tracking-tight text-slate-900">
+                                Data Scientist &amp; Researcher
+                            </h1>
 </div>
-<p class="text-text-secondary text-lg leading-relaxed">
-                                Passionate about leveraging data science to solve critical challenges in <span class="text-white font-bold">African healthcare and education systems</span>. My work bridges the gap between raw data and actionable insights, showcasing academic rigor, technical abilities, and real-world data thinking.
-                            </p>
-<div class="flex flex-wrap gap-4 pt-2">
-<div class="flex items-center gap-2 text-text-secondary">
-<span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+<p class="text-slate-700 text-base md:text-xl leading-relaxed font-medium">
+                            Passionate about leveraging data science to solve critical challenges in <span class="text-blue-700 font-bold">African healthcare and education systems</span>. My work bridges the gap between raw data and actionable insights, showcasing academic rigor, technical abilities, and real-world data thinking.
+                        </p>
+<div class="flex flex-wrap gap-6 pt-2">
+<div class="flex items-center gap-2 text-slate-600 font-medium text-sm md:text-base">
+<span class="material-symbols-outlined text-blue-600 text-[20px] md:text-[22px]">location_on</span>
 <span>Kigali, Rwanda</span>
 </div>
-<div class="flex items-center gap-2 text-text-secondary">
-<span class="material-symbols-outlined text-primary text-[20px]">language</span>
-<span>English, Arabic, Kinyarwanda</span>
+<div class="flex items-center gap-2 text-slate-600 font-medium text-sm md:text-base">
+<span class="material-symbols-outlined text-blue-600 text-[20px] md:text-[22px]">language</span>
+<span>English, Arabic</span>
 </div>
 </div>
 </div>
-<div class="relative w-full md:w-1/3 flex justify-center md:justify-end">
-<div class="relative h-64 w-64 md:h-72 md:w-72 overflow-hidden rounded-2xl border-4 border-[#282f39] shadow-xl">
-<div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent z-10"></div>
-<img alt="Professional headshot of a data scientist in a modern office setting" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYEYXl9Fqzf3ffF0qayjRu2uaawkmooIBWfcQ-qNOWPSQwrX9gCC2ixplHeaUHsjo6U1E45OBv7ZeUfYID_HA5Su2fzfz_NtlGKcjsUJrCTN7B55A3vO2b35yUKOWIACk-24Nbe47W666TJ9ZYrAF1xpsZzYkETPP6bEsPvQ4Oav7oj6xjMiAbQbTNiSmnSwCRJyXGYiYg2iwMW-OJI0B09VZ-L2pwYCgiqdOFfsh-j1Q85Ter-NZsnw2vb_TTlgELM-9qD5-GzNA"/>
+<div class="relative w-full md:w-1/3 flex justify-center md:justify-end hero-image-container">
+<div class="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full shadow-[0_0_25px_rgba(30,58,138,0.6)] bg-white border-4 border-[#0f172a]">
+<div class="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent z-10 pointer-events-none"></div>
+<img alt="Professional headshot of a data scientist in a modern office setting" class="h-full w-full object-cover" src="/static/images/3.png"/>
 </div>
 </div>
 </div>
 </div>
-<div class="w-full bg-[#1c2027] border-y border-[#282f39]">
-<div class="max-w-[960px] mx-auto px-4 py-12 md:px-10">
+<div class="w-full bg-white/60 backdrop-blur-sm border-y border-white/50">
+<div class="max-w-[1400px] mx-auto px-4 py-16 md:px-10">
 <div class="flex items-center gap-3 mb-8">
-<span class="material-symbols-outlined text-primary text-3xl">school</span>
-<h2 class="text-[28px] font-bold leading-tight text-white">Education</h2>
+<div class="p-2 bg-blue-100 rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-blue-700 text-2xl md:text-3xl">school</span>
 </div>
-<div class="flex flex-col md:flex-row items-stretch gap-6 rounded-xl bg-[#111418] border border-[#282f39] p-6 shadow-lg hover:border-primary/50 transition-colors">
-<div class="flex-1 flex flex-col justify-center gap-3">
+<h2 class="text-2xl md:text-3xl font-bold leading-tight text-slate-900">Education</h2>
+</div>
+<div class="flex flex-col md:flex-row items-stretch gap-8 rounded-2xl bg-white border border-slate-200 p-6 md:p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+<div class="flex-1 flex flex-col justify-center gap-4">
 <div>
-<h3 class="text-xl font-bold text-white">School of Science and Technology</h3>
-<p class="text-primary font-medium mt-1">Kigali Independent University (ULK)</p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-900">School of Science and Technology</h3>
+<p class="text-blue-600 font-bold text-base md:text-lg mt-1">Kigali Independent University (ULK)</p>
 </div>
-<div class="flex items-center gap-2 text-text-secondary text-sm mt-2">
-<span class="material-symbols-outlined text-[18px]">location_on</span>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-slate-500 font-medium text-sm md:text-base">
+<span class="material-symbols-outlined text-[18px] md:text-[20px]">location_on</span>
 <span>Gisozi Campus, Kigali, Rwanda</span>
 </div>
-<div class="flex items-center gap-2 text-text-secondary text-sm">
-<span class="material-symbols-outlined text-[18px]">calendar_month</span>
-<span>2019 - 2023 (Bachelor's Degree)</span>
-</div>
-</div>
-<div class="md:w-1/3 w-full h-48 md:h-auto rounded-lg overflow-hidden relative">
-<div class="absolute inset-0 bg-black/20 z-10"></div>
-<img alt="University campus building with modern architecture" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLdj1vZczUWaIo1DG-J4dEoa6J5GivfJ9_4H5exFehrp6MzysXe0M1thI-lxcYyT7C8iX9WPMhNbShxZVSumE0slNY9r8X9cY8IEq5DMAhRf4YyMtNh2X5PcvaGorZC_gYmzqzslGBKUr465MbBa01hAUvyaapZE8SZBXjbVEjQqXAusrR9JLXg6jsQmNRtsPAi8ToMgGFSz_DeNT0u74dCMJsl9BCyzlz8aHadu5axCug490jS3l7OLhKH1ollSIE1OFLRzEh-d0"/>
-<div class="absolute bottom-3 left-3 z-20 bg-primary/90 text-white text-xs font-bold px-2 py-1 rounded">ULK Campus</div>
+<div class="flex items-center gap-2 text-slate-500 font-medium text-sm md:text-base">
+<span class="material-symbols-outlined text-[18px] md:text-[20px]">calendar_month</span>
+<span>2023 - 2027 (Bachelor's Degree)</span>
 </div>
 </div>
 </div>
-</div>
-<div class="w-full max-w-[960px] px-4 py-16 md:px-10">
-<div class="flex flex-col gap-2 mb-10 text-center md:text-left">
-<h2 class="text-[32px] font-bold leading-tight text-white">Technical &amp; Professional Skills</h2>
-<p class="text-text-secondary">Hover over cards to see application context</p>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">chat</span>
-</div>
-<h3 class="text-lg font-bold text-white">Communication</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Translating complex data findings into clear narratives for stakeholders in healthcare and education sectors.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">terminal</span>
-</div>
-<h3 class="text-lg font-bold text-white">Programming &amp; Tools</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Proficient in Python (Pandas, NumPy), R, SQL, and Git for robust data pipeline development.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">query_stats</span>
-</div>
-<h3 class="text-lg font-bold text-white">ML &amp; Statistics</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Building predictive models using Scikit-Learn to analyze trends in public health data.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">monitoring</span>
-</div>
-<h3 class="text-lg font-bold text-white">Data Visualization</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Creating interactive dashboards with Tableau and Matplotlib to visualize educational disparities.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">cloud</span>
-</div>
-<h3 class="text-lg font-bold text-white">Big Data &amp; Cloud</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Familiarity with emerging cloud platforms (AWS/Azure) for scalable data storage and processing.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">layers</span>
-</div>
-<h3 class="text-lg font-bold text-white">Web &amp; Deployment</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Full-stack DS edge using Django and Flask to deploy models into accessible web applications.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">psychology</span>
-</div>
-<h3 class="text-lg font-bold text-white">Domain Knowledge</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Deep understanding of African socio-economic contexts applied to data interpretation.</p>
-</div>
-</div>
-<div class="skill-card group relative h-64 overflow-hidden rounded-xl bg-[#1c2027] border border-[#282f39] p-6 flex flex-col items-center justify-center text-center transition-all hover:shadow-[0_0_20px_rgba(19,109,236,0.15)]">
-<div class="mb-4 rounded-full bg-primary/10 p-4 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-4xl">school</span>
-</div>
-<h3 class="text-lg font-bold text-white">Soft &amp; Academic Skills</h3>
-<div class="overlay absolute inset-0 bg-primary/95 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out">
-<p class="text-white text-sm font-medium">Research methodology, critical thinking, and collaborative problem-solving in academic settings.</p>
+<div class="md:w-2/5 w-full h-48 md:h-auto rounded-xl overflow-hidden relative shadow-inner group">
+<div class="absolute inset-0 bg-black/10 z-10 transition-opacity group-hover:bg-black/0"></div>
+<img alt="University campus building with modern architecture" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://tse2.mm.bing.net/th/id/OIP.Dk6sEgpvFmVr3YKpyGSDCgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"/>
+<div class="absolute bottom-4 left-4 z-20 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-md shadow-sm backdrop-blur-md">ULK Campus</div>
 </div>
 </div>
 </div>
 </div>
-<div class="w-full bg-[#111418] border-t border-[#282f39] py-16" id="contact">
-<div class="max-w-[960px] mx-auto px-4 md:px-10">
-<div class="flex flex-col md:flex-row justify-between gap-10">
-<div class="flex-1 space-y-6">
-<h2 class="text-3xl font-bold text-white">Let's Connect</h2>
-<p class="text-text-secondary max-w-md">I am always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
+<div class="w-full max-w-[1400px] px-4 py-16 md:py-20 md:px-10">
+<div class="flex flex-col gap-3 mb-10 text-center md:text-left">
+<h2 class="text-2xl md:text-3xl font-bold leading-tight text-slate-900">Technical &amp; Professional Skills</h2>
+<p class="text-slate-600 text-base md:text-lg">Hover over cards to see application context</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Communication representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4B6lwPRF-Y-yNVkygA8DJEDuQyPMMLPfJOv0lGNsZxPWMalm6fQfYCzVe_1ASfZm86Llzv2DkAUyK4154jbMsHlSKUchm4QnKa18JGhnKe4jBnJ4CKMWw5xytA8QUnfnkSW7S1VOYB6iJANwJCWrcU5gWmgTvqlTUmQdqlvmr8Lv2FaxTMEUWxMfbu7gOUqShkcwbFdZoh6_yjG4jye8e2wUFDdNN7RU-3NhQ91wPHRJocer4ih38P5vkskOmKokakhFH-RASr5k"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Communication</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Translating complex data findings into clear narratives for stakeholders in healthcare and education sectors.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Programming representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW6cIj2Jk7wZEYMW33zV3E3DwvbI-A3uzvdjuVQ4Wya873H9Ivd0kGjJ-1BLMiyxf0FWUswJPzPcxcF2DCWTiEBnv9cJQAIgn9QHeym0NKFcaXKzgiRg0tJYSkm5voBQPukGIiFLEsxrAXh4c_8LQ6nUxf1z_MX-HkdU5YQk-6r1FTXYOdyIZ3TsaxFvi6lBX6vAVs0O_iPgc3afGOay_BdI58MBwF4-uO-hqtfer51u7efM1aUQR_P16seqYlKi9FxaGF0qf3XdA"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Programming &amp; Tools</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Proficient in Python (Pandas, NumPy), R, SQL, and Git for robust data pipeline development.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Machine Learning representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb3-P7r4aqni-JVd5kAgsqP-rnwQHPeQWcjJejnKiyT5SblQOzMoBD_PkooG3NYcgxCsYVF3fSjAgvEAvbzqg_vNm0DcZ24rgCvcMbsg32JhKw-nsvUDkS2wkgRBgDEpY-tCDIUebrmePF39L3itOAH1Uruc9x6MMnK2NDyq5PjCN2lKvB4GAwCgPn9rRg0UsoAvMF-KatPeqp57KFt9tiJ7ndO2NeqatvqFLIKXrJ_mC0zZKGonXOAl-OtEzh-jr4ixZXkUXeMSQ"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">ML &amp; Statistics</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Building predictive models using Scikit-Learn to analyze trends in public health data.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Data Visualization representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1wJ5e1sgqtDvMx3pB63O66RZkZyTImIXML5aWd_i0Jbs-LRIsTv51F63ZbrGDDkxDaXyFbW2fEfPItU-T65_o1ZAEQVlZlqj3-tgil94xt1d6Nl52x6E_PA8p_tcW3SgxgNHUjZh7SGoshUnpgILdkwbk7CAUY4EW6ergaXCAeeTsmoAjQluTMj7hbH7ZZQmUyPSXz_WIucqXXtm-sHRHdgJgbBCzgNtn8Jj3GYDGCYlH1HRUdpAzs8qpAjPnkBpgm5pz_yDAGIE"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Data Visualization</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Creating interactive dashboards with Tableau and Matplotlib to visualize educational disparities.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Cloud Computing representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIeIgEuYevws95D2z56q2YJWnxC3lYX7SkbJ-3Wn3dfOGQXR3lJ7fxlIZVlAe-t-qr3b-QAMxuDsQqTg-7McYbXDHYUsx9CUm2cSw6h2OHE87zZGwdVb5OxEW8wYPVbrz046enrqzG6ba_BUQSBkUIW1BwyyeQGOdavxaHALnJGaSURo0lxPqZiTICRQn3B-bri5vLVtrpDNJtmrA5LGyE6A0xcwJDs78mj_bGNObQ5pypxiRjLW0d_Le4vS8bpOpHfiq72Y5gDCU"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Big Data &amp; Cloud</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Familiarity with emerging cloud platforms (AWS/Azure) for scalable data storage and processing.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Web Development representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB91hu9p6lU5QLPavz5w2eU_dCjGrwVBWCtjF1AAokreplUfVUHxIxob9LU04ONxe9iokeYcW40qw8YdI2gdDhD5KWdeBYJY6tFdY6hdS9mb6ALd7RSZCO5L6y1gwfDnvbUwQmGC7vYpqksI8PR-Mw_pd0-1JEnhIzLX91BrLxl7bUnUE0eSGD5snulEjXnudYX1V6ew-BWkl_rkkjOP8C_VWsMIA7g80UJq0bk_6rq6-Oo_YGraC6a62Qg2IozUvEUoIRaD-s2Szw"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Web &amp; Deployment</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Full-stack DS edge using Django and Flask to deploy models into accessible web applications.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Domain Knowledge representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcyKggSlLwscSK5GD3YdpfUNlx-FeuRrGFcaesX2uHAcMb2y7XigxquFF8AoE9pL38-8UQcJrgZ7qbzCpm82Bo3wTkThcDe7IjoKjrxO3juQkr1qvkZrH1RKPWnYQaHS1rMRsftya6_fMBVRMKMDFp0n499-4ea_uojiIF8LtCNHdrOmAttw0q83JyPoANOTrJ-BMSlLl4hyLhqeGgYbo5GzoECUNMSVdo_JvXx3zuJYzYrSymLHDHfgAPDfXQ5JIeDZM9rRZYDIg"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Domain Knowledge</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Deep understanding of African socio-economic contexts applied to data interpretation.</p>
+</div>
+</div>
+<div class="reveal-on-scroll skill-card group relative h-72 overflow-hidden rounded-2xl bg-[#1C6EA4] border border-transparent p-6 flex flex-col items-center justify-center text-center shadow-md">
+<div class="mb-5 w-20 h-20 rounded-full overflow-hidden bg-white border-2 border-slate-200 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+<img alt="Soft Skills representation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLv8veJmsQpJD7KKFwNr3yBpFwAp4hzKm2d1OT6nV_ZKYKjFNZXgTLhbxmjbXOJA-_SJ1ttp0FqWTtF1d-a8bO0gUkxl6QC9ALOkLbNcAGPJ9bVtIO85IIkWgJYz6S59lVQ--hm6bNIseEiFdY1uCzSRBXMamtXcmOTP46F9b8q40gayhTdyOdkqA_-VhcAOS1Uktk-k1xA2HDkomAYLKEI-yTwpjC1zRGlWSzWkdzgLzL3BZnZOcuycAaB8eOGl2oBh5YaMyj3uM"/>
+</div>
+<h3 class="text-lg md:text-xl font-bold text-white tracking-wide">Soft &amp; Academic Skills</h3>
+<div class="overlay absolute inset-0 bg-black/60 p-6 flex items-center justify-center text-center transform translate-y-full transition-transform duration-300 ease-out backdrop-blur-[2px]">
+<p class="text-white text-sm md:text-base font-bold leading-relaxed">Research methodology, critical thinking, and collaborative problem-solving in academic settings.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full bg-[#1C6EA4] border-t border-slate-200 py-12 md:py-16 text-white" id="contact">
+<div class="max-w-[1400px] mx-auto px-4 md:px-10">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-16">
 <div class="space-y-4">
-<a class="flex items-center gap-4 group" href="mailto:narimanrobo8@gmail.com">
-<div class="size-10 rounded-full bg-surface-dark flex items-center justify-center text-primary border border-[#282f39] group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined">mail</span>
+<div class="flex items-center gap-2 text-white mb-2">
+<span class="material-symbols-outlined text-[32px] text-white/90">dataset</span>
+<h3 class="text-2xl font-black">Nariman</h3>
+</div>
+<p class="text-white/90 text-sm leading-relaxed font-medium">
+                                Empowering healthcare and education in Africa through data-driven insights and innovative technological solutions.
+                            </p>
 </div>
 <div>
-<p class="text-sm text-text-secondary">Email Me</p>
-<p class="text-white font-medium group-hover:text-primary transition-colors">narimanrobo8@gmail.com</p>
-</div>
-</a>
-<div class="flex items-center gap-4 group">
-<div class="size-10 rounded-full bg-surface-dark flex items-center justify-center text-primary border border-[#282f39]">
-<span class="material-symbols-outlined">call</span>
-</div>
-<div>
-<p class="text-sm text-text-secondary">Call Me</p>
-<p class="text-white font-medium">+250 793 903 619</p>
-<p class="text-white font-medium">+211 924 753 381</p>
-</div>
-</div>
-<a class="flex items-center gap-4 group" href="https://wa.me/250793903619" target="_blank">
-<div class="size-10 rounded-full bg-surface-dark flex items-center justify-center text-green-500 border border-[#282f39] group-hover:bg-green-600 group-hover:text-white transition-colors">
-<span class="material-symbols-outlined">chat</span>
+<h4 class="text-white font-bold text-lg mb-4 md:mb-6">Quick Links</h4>
+<ul class="space-y-3">
+<li><a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="/">Home</a></li>
+<li><a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="/about">About</a></li>
+<li><a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="/projects">Projects</a></li>
+<li><a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="/blog">Blog</a></li>
+</ul>
 </div>
 <div>
-<p class="text-sm text-text-secondary">WhatsApp</p>
-<p class="text-white font-medium group-hover:text-green-500 transition-colors">+250 793 903 619</p>
+<h4 class="text-white font-bold text-lg mb-4 md:mb-6">Contact</h4>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-white/90 text-sm mt-1">mail</span>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="mailto:narimanrobo8@gmail.com">narimanrobo8@gmail.com</a>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-white/90 text-sm mt-1">call</span>
+<div class="flex flex-col">
+<span class="text-white/80 text-sm font-medium">+250 793 903 619</span>
+<span class="text-white/80 text-sm font-medium">+211 924 753 381</span>
 </div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-white/90 text-sm mt-1">location_on</span>
+<span class="text-white/80 text-sm font-medium">Kigali, Rwanda</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold text-lg mb-4 md:mb-6">Connect</h4>
+<div class="flex gap-4">
+<a class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#0077b5] text-white transition-all shadow-sm group" href="https://linkedin.com/in/nariman-osman-b9a8783a3" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#333] text-white transition-all shadow-sm group" href="https://github.com/NarimanOusman/" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#1877f2] text-white transition-all shadow-sm group" href="https://facebook.com/NarimamRobo" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-3.047v-3.47h3.047v-2.641c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385c5.737-.9 10.125-5.864 10.125-11.854z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#25D366] text-white transition-all shadow-sm group" href="https://wa.me/250793903619" target="_blank">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
 </a>
 </div>
-</div>
-<div class="flex-1 md:border-l md:border-[#282f39] md:pl-10 space-y-6">
-<h3 class="text-xl font-bold text-white">Find me on</h3>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<a class="flex items-center gap-3 p-4 rounded-lg bg-surface-dark border border-[#282f39] hover:border-primary hover:bg-primary/5 transition-all group" href="https://linkedin.com/in/nariman-osman-b9a8783a3" target="_blank">
-<span class="material-symbols-outlined text-[#0077b5] group-hover:text-primary">group_add</span>
-<span class="text-white font-medium">LinkedIn</span>
-<span class="material-symbols-outlined text-text-secondary ml-auto text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</a>
-<a class="flex items-center gap-3 p-4 rounded-lg bg-surface-dark border border-[#282f39] hover:border-primary hover:bg-primary/5 transition-all group" href="https://github.com/NarimanOusman/" target="_blank">
-<span class="material-symbols-outlined text-white group-hover:text-primary">code</span>
-<span class="text-white font-medium">GitHub</span>
-<span class="material-symbols-outlined text-text-secondary ml-auto text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</a>
-<a class="flex items-center gap-3 p-4 rounded-lg bg-surface-dark border border-[#282f39] hover:border-primary hover:bg-primary/5 transition-all group" href="#" target="_blank">
-<span class="material-symbols-outlined text-[#1877f2] group-hover:text-primary">public</span>
-<span class="text-white font-medium">Facebook</span>
-<span class="material-symbols-outlined text-text-secondary ml-auto text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</a>
+<p class="text-xs text-white/70 mt-6 font-medium">Follow for updates on data science projects and research.</p>
 </div>
 </div>
+<div class="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-white/70 text-sm font-medium">© 2023 Nariman Osman. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-white/70 hover:text-white text-xs font-medium transition-colors" href="#">Privacy Policy</a>
+<a class="text-white/70 hover:text-white text-xs font-medium transition-colors" href="#">Terms of Service</a>
 </div>
-<div class="mt-16 pt-8 border-t border-[#282f39] text-center">
-<p class="text-text-secondary text-sm">© 2023 Nariman Osman. All rights reserved.</p>
 </div>
 </div>
 </div>
